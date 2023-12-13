@@ -1,0 +1,88 @@
+matrix = []
+
+
+def generate_even_odd_matrix(rows, cols):
+    global matrix
+    matrix = [[0] * cols for _ in range(rows)]
+    count = 1
+    for i in range(cols - 1, -1, -1):
+        if i % 2 == 0:
+            for j in range(rows - 1, -1, -1):
+                matrix[j][i] = count
+                count += 1
+        else:
+            for j in range(rows):
+                matrix[j][i] = count
+                count += 1
+    return matrix
+
+
+def generate_odd_even_matrix(rows, cols):
+    global matrix
+    matrix = [[0] * cols for _ in range(rows)]
+    count = 1
+    for i in range(cols - 1, -1, -1):
+        if i % 2 == 1:
+            for j in range(rows - 1, -1, -1):
+                matrix[j][i] = count
+                count += 1
+        else:
+            for j in range(rows):
+                matrix[j][i] = count
+                count += 1
+    return matrix
+
+
+def mirror_bottom_left():
+    array_bottom_left = matrix[::-1]
+    return array_bottom_left
+
+
+def mirror_bottom_right(array_bottom_left):
+    array_bottom_right = [row[::-1] for row in array_bottom_left]
+    return array_bottom_right
+
+
+def mirror_upper_right(array_bottom_right):
+    array_upper_right = array_bottom_right[::-1]
+    return array_upper_right
+
+
+def build_matrix(rows, cols):
+    if cols % 2 == 0:
+        generate_odd_even_matrix(rows, cols)
+    else:
+        generate_even_odd_matrix(rows, cols)
+
+
+def main():
+    rows = int(input("Введите количество строк матрицы:\n"))
+    while rows < 1:
+        print("Вы допустили ошибку, повторите ввод")
+        rows = int(input())
+
+    cols = int(input("Введите количество столбцов матрицы:\n"))
+    while cols < 1:
+        print("Вы допустили ошибку, повторите ввод")
+        cols = int(input())
+
+    print("Основная матрица:")
+    build_matrix(rows, cols)
+    for i in matrix:
+        print(' '.join(map(str, i)))
+
+    print("Преобразование - Слева-снизу")
+    for i in mirror_bottom_left():
+        print(' '.join(map(str, i)))
+
+    print("Преобразование - Справа-снизу")
+    for i in mirror_bottom_right(mirror_bottom_left()):
+        print(' '.join(map(str, i)))
+
+    print("Преобразование - Справа-сверху")
+    for i in mirror_upper_right(mirror_bottom_right(mirror_bottom_left())):
+        print(' '.join(map(str, i)))
+
+
+if __name__ == "__main__":
+    main()
